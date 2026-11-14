@@ -357,7 +357,6 @@ export default function Home() {
                 </span>
 
                 Solicitar atendimento
-                <span className="arrow">→</span>
               </a>
 
               <a href="#trabalhe" className="secondaryButton">
@@ -477,13 +476,13 @@ export default function Home() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inlineSocialLink"
+                className="inlineSocialLink serviceActionButton"
               >
                 <span className="tinySocialIcon whatsappColor">
                   <WhatsAppIcon />
                 </span>
 
-                Solicitar atendimento <span>→</span>
+                Solicitar atendimento
               </a>
             </article>
 
@@ -501,8 +500,8 @@ export default function Home() {
                 rapidez, proximidade e eficiência.
               </p>
 
-              <a href="#empresa">
-                Ver atuação da SIX <span>→</span>
+              <a href="#empresa" className="serviceActionButton">
+                Ver atuação da SIX
               </a>
             </article>
 
@@ -520,8 +519,8 @@ export default function Home() {
                 entrega.
               </p>
 
-              <a href="#empresa">
-                Conhecer a SIX <span>→</span>
+              <a href="#empresa" className="serviceActionButton">
+                Conhecer a SIX
               </a>
             </article>
           </div>
@@ -790,7 +789,6 @@ export default function Home() {
                   className="primaryButton"
                 >
                   Quero trabalhar na SIX
-                  <span>→</span>
                 </a>
 
                 <a
@@ -878,7 +876,6 @@ export default function Home() {
                 <small>Atendimento rápido e direto</small>
               </div>
 
-              <b>→</b>
             </a>
 
             <a
@@ -897,7 +894,6 @@ export default function Home() {
                 <small>Acompanhe a SIX nas redes sociais</small>
               </div>
 
-              <b>→</b>
             </a>
 
             <a
@@ -914,7 +910,6 @@ export default function Home() {
                 <small>Envie uma mensagem para nossa equipe</small>
               </div>
 
-              <b>→</b>
             </a>
           </div>
         </div>
@@ -1318,7 +1313,35 @@ export default function Home() {
           width: 24px;
           height: 24px;
         }
-      `}</style>
+      `}
+        /* PADRÃO DE AÇÕES SEM SETAS */
+        .serviceActionButton {
+          width: fit-content;
+          min-height: 42px;
+          padding: 0 16px !important;
+          display: inline-flex !important;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          border: 1px solid rgba(255, 45, 55, 0.34) !important;
+          border-radius: 10px;
+          background: rgba(255, 25, 40, 0.07);
+          color: #ffffff !important;
+          font-weight: 800;
+          text-decoration: none !important;
+          transition: 0.2s ease;
+        }
+
+        .serviceActionButton:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255, 55, 65, 0.55) !important;
+          background: rgba(255, 25, 40, 0.13);
+        }
+
+        .contactCard {
+          cursor: pointer;
+        }
+</style>
     </main>
   );
 }
