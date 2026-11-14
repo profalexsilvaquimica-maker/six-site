@@ -7,12 +7,15 @@ import {
   useState,
 } from "react";
 
-type Curriculo = {
+type ArquivoAnexado = {
   nome: string;
   tipo: string;
   tamanho: number;
   conteudo: string;
 };
+
+type Curriculo = ArquivoAnexado;
+type FotoCandidato = ArquivoAnexado;
 
 type Formulario = {
   nome: string;
@@ -97,7 +100,13 @@ export default function TrabalheConoscoPage() {
   const [curriculo, setCurriculo] =
     useState<Curriculo | null>(null);
 
+  const [foto, setFoto] =
+    useState<FotoCandidato | null>(null);
+
   const [carregandoCurriculo, setCarregandoCurriculo] =
+    useState(false);
+
+  const [carregandoFoto, setCarregandoFoto] =
     useState(false);
 
   const [enviando, setEnviando] =
@@ -183,13 +192,75 @@ export default function TrabalheConoscoPage() {
         leitor.onerror = () =>
           reject(
             new Error(
-              "Não foi possível ler o currículo."
+              "Não foi possível ler o arquivo."
             )
           );
 
         leitor.readAsDataURL(arquivo);
       }
     );
+  }
+
+  async function adicionarFoto(
+    evento: ChangeEvent<HTMLInputElement>
+  ) {
+    const arquivo =
+      evento.target.files?.[0];
+
+    evento.target.value = "";
+
+    if (!arquivo) return;
+
+    const tiposPermitidos = [
+      "image/jpeg",
+      "image/png",
+    ];
+
+    if (
+      !tiposPermitidos.includes(
+        arquivo.type
+      )
+    ) {
+      setErro(
+        "Envie a foto em JPG, JPEG ou PNG."
+      );
+      return;
+    }
+
+    const limite =
+      3 * 1024 * 1024;
+
+    if (arquivo.size > limite) {
+      setErro(
+        "A foto deve ter no máximo 3 MB."
+      );
+      return;
+    }
+
+    setErro("");
+    setCarregandoFoto(true);
+
+    try {
+      const conteudo =
+        await arquivoParaBase64(arquivo);
+
+      setFoto({
+        nome: arquivo.name,
+        tipo:
+          arquivo.type ||
+          "image/jpeg",
+        tamanho: arquivo.size,
+        conteudo,
+      });
+    } catch (error) {
+      setErro(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível anexar a foto."
+      );
+    } finally {
+      setCarregandoFoto(false);
+    }
   }
 
   async function adicionarCurriculo(
@@ -340,6 +411,7 @@ export default function TrabalheConoscoPage() {
 
             body: JSON.stringify({
               ...formulario,
+              foto,
               curriculo,
             }),
           }
@@ -356,6 +428,7 @@ export default function TrabalheConoscoPage() {
       }
 
       setFormulario(inicial);
+      setFoto(null);
       setCurriculo(null);
       setSucesso(true);
 
@@ -425,7 +498,7 @@ export default function TrabalheConoscoPage() {
               href="/"
               className="six-back"
             >
-              ← Voltar ao site
+              Voltar ao site
             </a>
           </div>
         </div>
@@ -640,6 +713,67 @@ export default function TrabalheConoscoPage() {
                   }
                   placeholder="Digite seu bairro"
                 />
+              </div>
+
+              <div className="six-upload">
+                <div className="six-upload-top">
+                  <div>
+                    <h3>
+                      Foto do candidato
+                    </h3>
+
+                    <p>
+                      Envie uma foto em JPG, JPEG ou PNG.
+                      Tamanho máximo: 3 MB.
+                    </p>
+                  </div>
+
+                  <label className="six-upload-button">
+                    {carregandoFoto
+                      ? "Anexando..."
+                      : "Selecionar foto"}
+
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                      onChange={
+                        adicionarFoto
+                      }
+                      disabled={
+                        carregandoFoto
+                      }
+                    />
+                  </label>
+                </div>
+
+                {!foto ? (
+                  <div className="six-no-file">
+                    Nenhuma foto anexada.
+                  </div>
+                ) : (
+                  <div className="six-file">
+                    <div>
+                      <strong>
+                        {foto.nome}
+                      </strong>
+
+                      <span>
+                        {tamanhoArquivo(
+                          foto.tamanho
+                        )}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFoto(null)
+                      }
+                    >
+                      Remover
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
