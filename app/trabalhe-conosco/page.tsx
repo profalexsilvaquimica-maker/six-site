@@ -376,6 +376,18 @@ export default function TrabalheConoscoPage() {
     if (!formulario.chavePix.trim())
       return "Preencha a chave Pix.";
 
+    if (!formulario.contatoEmergencia.trim())
+      return "Preencha o nome do contato de emergência.";
+
+    if (!formulario.telefoneEmergencia.trim())
+      return "Preencha o telefone do contato de emergência.";
+
+    if (!foto)
+      return "Anexe a foto do candidato.";
+
+    if (!curriculo)
+      return "Anexe o currículo.";
+
     return "";
   }
 
@@ -719,7 +731,7 @@ export default function TrabalheConoscoPage() {
                 <div className="six-upload-top">
                   <div>
                     <h3>
-                      Foto do candidato
+                      Foto do candidato *
                     </h3>
 
                     <p>
@@ -1082,7 +1094,7 @@ export default function TrabalheConoscoPage() {
               <div className="six-inner-card">
                 <div className="six-grid two">
                   <Campo
-                    label="Nome"
+                    label="Nome *"
                     valor={
                       formulario.contatoEmergencia
                     }
@@ -1095,7 +1107,7 @@ export default function TrabalheConoscoPage() {
                   />
 
                   <Campo
-                    label="Telefone"
+                    label="Telefone *"
                     valor={
                       formulario.telefoneEmergencia
                     }
@@ -1132,7 +1144,7 @@ export default function TrabalheConoscoPage() {
 
             <FormSectionTitle
               numero="05"
-              titulo="Currículo"
+              titulo="Currículo *"
               descricao="Anexe seu currículo para complementar o cadastro"
             />
 
@@ -1141,7 +1153,7 @@ export default function TrabalheConoscoPage() {
                 <div className="six-upload-top">
                   <div>
                     <h3>
-                      Anexar currículo
+                      Anexar currículo *
                     </h3>
 
                     <p>
@@ -1248,7 +1260,8 @@ export default function TrabalheConoscoPage() {
                 type="submit"
                 disabled={
                   enviando ||
-                  carregandoCurriculo
+                  carregandoCurriculo ||
+                  carregandoFoto
                 }
                 className="six-submit"
               >
