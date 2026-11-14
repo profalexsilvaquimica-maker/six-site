@@ -1313,7 +1313,6 @@ export default function Home() {
           width: 24px;
           height: 24px;
         }
-      `}
         /* PADRÃO DE AÇÕES SEM SETAS */
         .serviceActionButton {
           width: fit-content;
@@ -1341,6 +1340,7 @@ export default function Home() {
         .contactCard {
           cursor: pointer;
         }
+      `}
 </style>
     </main>
   );
